@@ -10,9 +10,6 @@ use IEEE.numeric_std.all;
 use IEEE.std_logic_unsigned.all;
 
 entity Fetch is
-        generic(
-                clk_period : time := 1 ns
-        );
 	port(
                 clk : in std_logic;                                           --the system clock which drives the controller (!!THIS MUST MATCH THE PROGRAM MEMORY CLOCK)
 		reset : in std_logic;                                         --indicates that a system reset has taken place and the program counter should be reset to the reset address. 
