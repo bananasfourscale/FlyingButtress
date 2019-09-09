@@ -1,1 +1,41 @@
 Foundation for the Flying Buttress Computer architecture 
+
+0x01	Load Byte		LDB		DestR, AddrR
+	- Load a single byte from the address stored in AddrR, and put the value into DestR
+	
+0x02	Load Word		LDW		DestR, AddrR									
+	- Load a signle word from the address stored in AddrR, and put the value into DestR
+
+0x03	Load Set Bytes	LDSB	DestR, AddrR, SetCnt
+    - Load a set of data bytes of size SetCnt starting at the address in AddrR and placing them in registers starting at DestR
+
+0x04 	Load Set Words	LDSW	DestR, AddrR, SetCnt
+	- Load a set of data words of size SetCnt starting at the address in AddrR and placing the them in registers starting at DestR
+
+0x05    Move Byte   	MVB		DestR, AddrR
+	- Move data byte from AddrR to DestR
+	
+0x06 	Move Word   	MVW	    DestR, AddrR
+	- Move data word from AddrR to DestR
+	
+0x07  	Move Immediate	MVI		DestR, Imm
+	- Move the value Imm into the register DestR
+	
+0x08	Move Data		MVD		DestR, AddrR
+	- Move data stored at address AddrR into the data address DestR
+	
+0x09	Store Byte		STB		DestR, AddrR
+	- Store the data byte contained in AddrR to the address stored in DestR
+
+0x0A	Store Word		STW		DestR, AddrR
+	- Store the data word contained in AddrR to the address stored in DestR
+	
+0x0B	Store Immediate	STI		DestR, Imm
+	- Store the value Imm at the address stored in DestR
+	
+0x0C    Store Set Bytes	STSB	DestR, AddrR, SetCnt
+	- Store a set of data bytes of size SetCnt starting at the Register AddrR and placing the data in memory starting at address DestR 
+
+0x0D    Store Set Words STSW	DestR, AddrR, SetCnt
+	- Store a set of data words of size SetCnt starting at the register AddrR and placing the data in memory starting at address DestR
+
