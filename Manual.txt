@@ -1,41 +1,127 @@
 Foundation for the Flying Buttress Computer architecture 
 
-0x01	Load Byte		LDB		DestR, AddrR
+0x01	Load Byte				LDB				DestR, AddrR
 	- Load a single byte from the address stored in AddrR, and put the value into DestR
 	
-0x02	Load Word		LDW		DestR, AddrR									
+0x02	Load Word				LDW				DestR, AddrR									
 	- Load a signle word from the address stored in AddrR, and put the value into DestR
 
-0x03	Load Set Bytes	LDSB	DestR, AddrR, SetCnt
+0x03	Load Set Bytes			LDSB			DestR, AddrR, SetCnt
     - Load a set of data bytes of size SetCnt starting at the address in AddrR and placing them in registers starting at DestR
 
-0x04 	Load Set Words	LDSW	DestR, AddrR, SetCnt
+0x04 	Load Set Words			LDSW			DestR, AddrR, SetCnt
 	- Load a set of data words of size SetCnt starting at the address in AddrR and placing the them in registers starting at DestR
-
-0x05    Move Byte   	MVB		DestR, AddrR
+	
+0x05    Move Byte  	 			MVB				DestR, AddrR
 	- Move data byte from AddrR to DestR
 	
-0x06 	Move Word   	MVW	    DestR, AddrR
+0x06 	Move Word   			MVW	    		DestR, AddrR
 	- Move data word from AddrR to DestR
 	
-0x07  	Move Immediate	MVI		DestR, Imm
+0x07  	Move Immediate			MVI				DestR, Imm
 	- Move the value Imm into the register DestR
 	
-0x08	Move Data		MVD		DestR, AddrR
+0x08	Move Data				MVD				DestR, AddrR
 	- Move data stored at address AddrR into the data address DestR
 	
-0x09	Store Byte		STB		DestR, AddrR
+0x09	Store Byte				STB				DestR, AddrR
 	- Store the data byte contained in AddrR to the address stored in DestR
 
-0x0A	Store Word		STW		DestR, AddrR
+0x0A	Store Word				STW				DestR, AddrR
 	- Store the data word contained in AddrR to the address stored in DestR
 	
-0x0B	Store Immediate	STI		DestR, Imm
+0x0B	Store Immediate			STI				DestR, Imm
 	- Store the value Imm at the address stored in DestR
 	
-0x0C    Store Set Bytes	STSB	DestR, AddrR, SetCnt
+0x0C    Store Set Bytes			STSB			DestR, AddrR, SetCnt
 	- Store a set of data bytes of size SetCnt starting at the Register AddrR and placing the data in memory starting at address DestR 
 
-0x0D    Store Set Words STSW	DestR, AddrR, SetCnt
+0x0D    Store Set Words 		STSW			DestR, AddrR, SetCnt
 	- Store a set of data words of size SetCnt starting at the register AddrR and placing the data in memory starting at address DestR
 
+0x0E 	Add Registers			ADRR			DestR, AddrR1, AddrR2
+	- Add the value stored in one register AddrR1, to the value stored in  AddrR2 and store the result in DestR, This action has
+	The possibility to set the carry/borrow bit if the result has a carry, the zero bit if the result is zero, and the negative bit if the result flows below zero.
+
+0x0F	Add Register/Immm		ADRI			DestR, AddrR, Imm 
+	- Add the value of Imm to the value stored in AddrR and store the result in DestR. This action has
+	The possibility to set the carry/borrow bit if the result has a carry, the zero bit if the result is zero, and the negative bit if the result flows below zero.
+
+0x10	Add Imm/Imm				ADII			DestR, Imm1, Imm2
+	- Add the value of Imm1 to the value of Imm2 and store the result in DestR. This action has
+	The possibility to set the carry/borrow bit if the result has a carry, the zero bit if the result is zero, and the negative bit if the result flows below zero.
+
+0x11	Add Increment			ADIC			DsetR, AddrR
+	- Add 1 to the value stored in AddrR. This action has
+	The possibility to set the carry/borrow bit if the result has a carry, the zero bit if the result is zero, and the negative bit if the result flows below zero.
+
+0x12	Subtract Registers		SBRR			DestR, AddrR1, AddrR2
+	- Subtract the value stored in AddrR2 from the value stored in AddrR1 and store the result in DestR. This action has
+	The possibility to set the carry/borrow bit if the result has a borrow, the zero bit if the result is zero, and the negative bit if the result flows below zero.
+	
+0x13	Subtract Register/Immm	SBRI			DestR, AddrR, Imm
+	- Subtract the value Imm from the value stored in AddrR, and store the result in DestR. This action has
+	The possibility to set the carry/borrow bit if the result has a borrow, the zero bit if the result is zero, and the negative bit if the result flows below zero.
+	
+0x14	Subtract Imm/Imm		SBII			DestR, Imm1, Imm2
+	- Subtract the value of Imm2 from the value of Imm1 and store the result in DestR. This action has
+	The possibility to set the carry/borrow bit if the result has a borrow, the zero bit if the result is zero, and the negative bit if the result flows below zero.
+	
+0x15	Add Decrement			ADDC			DestR, AddrR 
+	- Subtract 1 from the value stored in AddrR and store the result in DestR. This action has
+	The possibility to set the carry/borrow bit if the result has a borrow, the zero bit if the result is zero, and the negative bit if the result flows below zero.
+
+0x16 	Multiply Registers		MLRR			DestR, AddrR1, AddrR2
+	- Multiply the value stored in one register AddrR1, by the value stored in  AddrR2 and store the result in DestR, This action has
+	The possibility to set the carry/borrow bit if the result has a carry, the zero bit if the result is zero, and the negative bit if the result flows below zero.
+
+0x17	Multiply Register/Immm	MLRI			DestR, AddrR, Imm 
+	- Multiply the value of Imm by the value stored in AddrR and store the result in DestR. This action has
+	The possibility to set the carry/borrow bit if the result has a carry, the zero bit if the result is zero, and the negative bit if the result flows below zero.
+
+0x18	Multiply Imm/Imm		MLII			DestR, Imm1, Imm2
+	- Multiply the value of Imm1 by the value of Imm2 and store the result in DestR. This action has
+	The possibility to set the carry/borrow bit if the result has a carry, the zero bit if the result is zero, and the negative bit if the result flows below zero.
+
+0x19 	Divide Registers		MLRR			DestR, AddrR1, AddrR2
+	- Divide the value stored in one register AddrR1, by the value stored in  AddrR2 and store the result in DestR, This action has
+	The possibility to set the carry/borrow bit if the result has a carry, the zero bit if the result is zero, and the negative bit if the result flows below zero.
+
+0x1A	Divide Register/Immm	MLRI			DestR, AddrR, Imm 
+	- Divide the value of Imm by the value stored in AddrR and store the result in DestR. This action has
+	The possibility to set the carry/borrow bit if the result has a carry, the zero bit if the result is zero, and the negative bit if the result flows below zero.
+
+0x1B	Divide Imm/Imm			MLII			DestR, Imm1, Imm2
+	- Divide the value of Imm1 by the value of Imm2 and store the result in DestR. This action has
+	The possibility to set the carry/borrow bit if the result has a carry, the zero bit if the result is zero, and the negative bit if the result flows below zero.
+
+0x1C	Logical Shift Left		LSL				DestR, AddrR, ShiftVal
+	- Logical shift the value stored in AddrR by ShiftVal bits to the left and store the value in DestR.
+	
+0x1D	Logical Shift Right		LSR				DestR, AddrR, ShiftVal
+	- Logical Shift the value stored in AddrR by ShiftVal bits to the right and store the value in DestR.
+	
+0x1E	Arithmatic Shift Left	ASL				DestR, AddrR, ShiftVal
+	- Arithmatic shift of the value stored in AddrR by ShiftVal bits to the left and store the value in DestR
+
+0x1F	Arithmatic Shift Right 	ASR				DesrR, AddrR, ShiftVal
+	- Arithmatic shift of the value stored in AddrR byt ShiftVal bits to the left and store the value in DestR
+	
+0x20	Logical OR	Registers    OR				DestR, AddrR1, AddrR2
+	- OR the values sotred in both AddrR1 and AddrR2 and store the result in DestR
+
+0x21	Logical OR Reg/Imm		ORRI			DestR, AddrR, Imm
+	- OR the value stored in AddrR with the value Imm and store the result in DestR
+
+0x22 	Logical OR Imm/Imm		ORII			DestR, Imm1, Imm2
+	- OR the value of Imm1 with the vaule Imm2 and store the result in DestR
+	
+0x23	Logical AND Registers	AND				DestR, AddrR1, AddrR2
+	- AND the value stored in AddrR1 with the value stored in AddrR2 and store the result in DestR
+	
+0x24 	Logical AND Reg/Imm		ANDR			DestR, AddrR, Imm
+	- AND the value stored in AddrR with the value Imm and store the result in DestR
+	
+0x25	Logical AND Imm/Imm		ANDI			DestR, Imm1, Imm2
+	- AND the value Imm1 with the value of Imm2 and store the result in DestR
+	
