@@ -124,4 +124,51 @@ Foundation for the Flying Buttress Computer architecture
 	
 0x25	Logical AND Imm/Imm		ANDI			DestR, Imm1, Imm2
 	- AND the value Imm1 with the value of Imm2 and store the result in DestR
+
+0x26	Logical XOR Registers	XOR				DestR, AddrR1, AddrR2
+	- XOR the value stored in AddrR1 with the value stored in AddrR2 and store the result in DestR
+
+0x27	Logical XOR Reg/Imm		XORR			DestR, AddrR, Imm
+	- XOR the value stored in AddrR with the value Imm and store the result in DestR
+
+0x28	Logical XOR Imm/Imm 	XORI			DestR, Imm1, Imm2
+	- XOR the value Imm1 with the value Imm2 and store the result in DestR
 	
+0x29	Logical NOT Register	NOT				DestR, AddrR1
+	- NOT the value stored in AddrR and store the result in DestR
+	
+0x30	Logical NOT Immediate	NOTI			DestR, Imm
+	- NOT the value of Imm and store the result in DestR
+
+x031	Unconditional Jump		JUMP			JumpAddr
+	- Jump to the given address  in JumpAddr
+	
+0x32	Branch Equal 			BEQ				Branch, CompR1, CompR2
+	- Branch to the given adddress Branch if the value in CompR1 is equal to the value stored in CompR2
+
+0x33	Branch Not Equal		BNEQ			Branch, CompR1, CompR2
+	- Branch to the given address Branch if the value in CompR1 is not equal to the value stored CompR2
+
+0x34	Branch Greater Than		BGT				Branch, CompR1, CompR2
+	- Branch to the given address Branch if the value in CompR1 is explicitly greater than the value stored in CompR2
+	
+0x35	Branch Less Than 		BLT				Branch, CompR1, CompR2
+	- Branch to the given address Branch if the vaule in CompR1 is explicitly less than the value stored in CompR2
+
+0x36	Branch Zero				BRZ				Branch, CompR
+	- Branch to the given address Branch if the value stored in CompR is exactly zero.
+
+0x37	Branch Status Zero		BRSZ			Branch
+	- Branch if the last operation set the zero bit of the status register
+	
+0x38	Branch Status Negative	BRSN			Branch
+	- Branch if the last operation set the negative bit of the status register
+	
+0x39	Branch Status Overflow	BRSO			Branch
+	- Branch if the last operation set the overflow bit of the status register
+
+0x3A	Branch Status DivZero	BRSD			Branch
+	- Branch if the last operation set the divide by zero bit of the status register
+
+0x3B	Branch Status Carry		BRSC			Branch
+	- Branch if the last operation set tbe carry bit of the status register
