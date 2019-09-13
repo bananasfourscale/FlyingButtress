@@ -1,8 +1,6 @@
 -- file : Fetch.vhdl
 -- description : The first stage of the basic execution cycle, the fetch hardware must manage the program counter, and gathering instructions from the program memory space. 
 
-
-
 library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.std_logic_arith.all;

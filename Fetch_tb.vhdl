@@ -24,66 +24,67 @@ architecture test of Fetch_tb is
     );
     end component;
 
-    -- test signals
-    signal clk_in : std_logic := '0';
-    signal reset_in : std_logic := '0';
-    signal PC_mod : std_logic := '0';
-    signal reset_address : std_logic_vector(31 downto 0) := (others => '0');
-    signal PC_address : std_logic_vector(31 downto 0) := (others => '0');
-    signal program_address : std_logic_vector(31 downto 0) := (others => '0');
+    --test signals
+    signal clk_test : std_logic := '0';
+    signal reset_test : std_logic := '0';
+    signal PC_mod_test : std_logic := '0';
+    signal reset_address_test : std_logic_vector(31 downto 0) := (others => '0');
+    signal PC_address_test : std_logic_vector(31 downto 0) := (others => '0');
+    signal program_address_test : std_logic_vector(31 downto 0) := (others => '0');
     constant clock_period : time := 1 ns;
 begin
         
     Fetch_test_unit : Fetch port map(
-        clk => clk_in,
-        reset => reset_in,
-        reset_addr => reset_address,
-        PC_modify => PC_mod,
-        PC_mod_addr => PC_address,
-        program_addr => program_address
+        clk => clk_test,
+        reset => reset_test,
+        reset_addr => reset_address_test,
+        PC_modify => PC_mod_test,
+        PC_mod_addr => PC_address_test,
+        program_addr => program_address_test
     );        
-        
-    run_clk : process is --will toggle the clock in the correct manner based on the clock period given. 
+    
+    --will toggle the clock in the correct manner based on the clock period given.     
+    run_clk : process is 
     
     begin
         wait for clock_period/2;
-        clk_in <= not(clk_in);
+        clk_test <= not(clk_test);
     end process;
     
     test : process is
     
     begin 
-        -- see if the PC can count normally
+        --see if the PC can count normally
         wait for clock_period*4;
-        -- reset the counter to 0
-        reset_in <= '1';
+        --reset the counter to 0
+        reset_test <= '1';
         wait for clock_period;
-        -- check the PC changed
-        assert not(program_address = x"00000000")
+        --check the PC changed
+        assert not(program_address_test = x"00000000")
             report "RESET COMPLETE"
             severity NOTE;
-        reset_in <= '0';
+        reset_test <= '0';
         wait for clock_period*4;
-        -- set the address back to 0 with a jump
-        PC_mod <= '1';
+        --set the address back to 0 with a jump
+        PC_mod_test <= '1';
         wait for clock_period;
-        -- check the FC changed
-        assert not(program_address = x"00000000")
+        --check the FC changed
+        assert not(program_address_test = x"00000000")
             report "JUMP TO 0 COMPLETE"
             severity NOTE;
-        PC_mod <= '0';
+        PC_mod_test <= '0';
         wait for clock_period*16;
-        -- set the address to a specific address with a jump
-        PC_mod <= '1';
-        PC_address <= x"DEADBEEF";
+        --set the address to a specific address with a jump
+        PC_mod_test <= '1';
+        PC_address_test <= x"DEADBEEF";
         wait for clock_period;
-        PC_mod <= '0';
-        -- check the FC changed
-        assert not(program_address = x"DEADBEEF")
+        PC_mod_test <= '0';
+        --check the FC changed
+        assert not(program_address_test = x"DEADBEEF")
             report "JUMP TO TEST COMPLETE"
             severity NOTE;
         
-        -- end the test with a false failure
+        --end the test with a false failure
         assert false
             report "END OF TEST"
             severity FAILURE;
