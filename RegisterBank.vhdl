@@ -22,7 +22,7 @@ entity RegisterBank is
 	
 end RegisterBank;
 
-architecture Structural of RegisterBank is
+ architecture Structural of RegisterBank is
     component CPURegister is
         port(
             clk : in std_logic;	                                    --clock signal that drives all functionality
