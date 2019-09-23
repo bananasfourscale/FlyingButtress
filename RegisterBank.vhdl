@@ -3,9 +3,7 @@
 
 library IEEE;
 use IEEE.std_logic_1164.all;
-use IEEE.std_logic_arith.all;
 use IEEE.numeric_std.all;
-use IEEE.std_logic_unsigned.all;
 use IEEE.math_real.all;
 
 entity RegisterBank is
@@ -18,9 +16,9 @@ entity RegisterBank is
         reset : in std_logic;                                   --sychronous reset line that will clear all data in all registers
         write_en : in std_logic;                                --enable writing to one of the regsiters based on the given wrtie_addr
         write_bank_data : in std_logic_vector(reg_size-1 downto 0);     --the data what will be written to the selected register when the enable line is set
-        write_addr : in std_logic_vector( downto 0);           --selectes which of the 32 registers to write to when the enable line is set
-        read_1_addr : in std_logic_vector(log2(real(reg_size)) downto 0);           --the address of the first register to read out from the instruction
-        read_2_addr : in std_logic_vector(log2(real(reg_size)) downto 0);           --the address of the second register to read out from the instruction
+        write_addr : in std_logic_vector(reg_size-1 downto 0);           --selectes which of the 32 registers to write to when the enable line is set
+        read_1_addr : in std_logic_vector(integer(ceil(log2(real(reg_size)))) downto 0);           --the address of the first register to read out from the instruction
+        read_2_addr : in std_logic_vector(integer(ceil(log2(real(reg_size)))) downto 0);           --the address of the second register to read out from the instruction
         reg_1_data : out std_logic_vector(reg_size-1 downto 0);         --the data out of the first register read out based on the given address
         reg_2_data : out std_logic_vector(reg_size-1 downto 0)          --the data out of the second register read out based on the given address
     );
@@ -64,10 +62,10 @@ begin
         variable write_addr_var : integer;
     begin
         --convert the input address to an integer for easier indexing.
-        write_addr_var := integer(write_addr);
+        write_addr_var := to_integer(unsigned(write_addr));
         if(write_en_internal = '1') then
             --if write enable is high, just put the data on the input bank. It will not be written to the Register unless the clock goes high
-            input_bank( (reg_count*write_addr_var) + (reg_size-1) downto (reg_count*write_addr_var));
+            input_bank( (reg_count*write_addr_var) + (reg_size-1) downto (reg_count*write_addr_var)) <= write_bank_data;
         else
             --otherwise the bank just stays the same
             input_bank <= input_bank; 
@@ -79,8 +77,8 @@ begin
         variable read_addr_2_var : integer;
     begin
         --convert both output addresses to integers for easier indexing.
-        read_addr_1_var := integer(read_1_addr);
-        read_addr_2_var := integer(read_2_addr);
+        read_addr_1_var := to_integer(unsigned(read_1_addr));
+        read_addr_2_var := to_integer(unsigned(read_2_addr));
         
         --relay the correct register output to the two bank outputs based on the two given register addresses
         reg_1_data <= output_bank( (reg_count*read_addr_1_var) + (reg_size-1) downto (reg_count*read_addr_1_var));
