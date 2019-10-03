@@ -16,9 +16,9 @@ entity RegisterBank is
         reset : in std_logic;                                   --sychronous reset line that will clear all data in all registers
         write_en : in std_logic;                                --enable writing to one of the regsiters based on the given wrtie_addr
         write_bank_data : in std_logic_vector(reg_size-1 downto 0);     --the data what will be written to the selected register when the enable line is set
-        write_addr : in std_logic_vector(reg_size-1 downto 0);           --selectes which of the 32 registers to write to when the enable line is set
-        read_1_addr : in std_logic_vector(integer(ceil(log2(real(reg_size)))) downto 0);           --the address of the first register to read out from the instruction
-        read_2_addr : in std_logic_vector(integer(ceil(log2(real(reg_size)))) downto 0);           --the address of the second register to read out from the instruction
+        write_addr : in std_logic_vector(integer(ceil(log2(real(reg_size))))-1 downto 0);           --selectes which of the 32 registers to write to when the enable line is set
+        read_1_addr : in std_logic_vector(integer(ceil(log2(real(reg_size))))-1 downto 0);           --the address of the first register to read out from the instruction
+        read_2_addr : in std_logic_vector(integer(ceil(log2(real(reg_size))))-1 downto 0);           --the address of the second register to read out from the instruction
         reg_1_data : out std_logic_vector(reg_size-1 downto 0);         --the data out of the first register read out based on the given address
         reg_2_data : out std_logic_vector(reg_size-1 downto 0)          --the data out of the second register read out based on the given address
     );
@@ -27,6 +27,9 @@ end RegisterBank;
 
  architecture Structural of RegisterBank is
     component CPURegister is
+        generic (
+            reg_size : integer := 32
+        );
         port(
             clk : in std_logic;	                                    --clock signal that drives all functionality
             reset : in std_logic;                                   --sychronous reset line that will clear all data in the register
@@ -49,7 +52,11 @@ begin
     
     --generate the 32 cpu registes
     Register_gen : for i in 0 to (reg_count-1) generate
-        REG : CPURegister port map(
+        REG : CPURegister 
+        generic map(
+            reg_size => reg_size
+        )
+        port map(
             clk => clk,
             reset => reset,
             data_in => input_bank(((reg_count*i) + (reg_size-1)) downto (reg_count*i)),
@@ -58,21 +65,25 @@ begin
         );
     end generate;
     
-    write_proc : process(write_en_internal, write_bank_data, write_addr) is
+    write_proc : process(clk, write_en_internal, write_bank_data, write_addr) is
         variable write_addr_var : integer;
     begin
         --convert the input address to an integer for easier indexing.
         write_addr_var := to_integer(unsigned(write_addr));
         if(write_en_internal = '1') then
+            --set the write enable line of the selected internal register
+            write_en_bank(write_addr_var) <= '1';
             --if write enable is high, just put the data on the input bank. It will not be written to the Register unless the clock goes high
             input_bank( (reg_count*write_addr_var) + (reg_size-1) downto (reg_count*write_addr_var)) <= write_bank_data;
         else
+            --clear all of the write enable lines
+            write_en_bank <= (others => '0');
             --otherwise the bank just stays the same
             input_bank <= input_bank; 
         end if;
     end process;
     
-    read_proc : process(read_1_addr, read_2_addr) is
+    read_proc : process(clk, read_1_addr, read_2_addr) is
         variable read_addr_1_var : integer;
         variable read_addr_2_var : integer;
     begin

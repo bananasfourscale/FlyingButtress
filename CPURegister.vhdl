@@ -9,19 +9,22 @@ use IEEE.numeric_std.all;
 use IEEE.std_logic_unsigned.all;
 
 entity CPURegister is
+    generic(
+        reg_size : integer := 32
+    );
     port(
         clk : in std_logic;	                                    --clock signal that drives all functionality
         reset : in std_logic;                                   --sychronous reset line that will clear all data in the register
-        data_in : in std_logic_vector(31 downto 0);	            --input signal which will be stored to the data_bank if write enable is set
+        data_in : in std_logic_vector(reg_size-1 downto 0);	            --input signal which will be stored to the data_bank if write enable is set
         write_en : in std_logic;                                --the control line that will enable the writing of the data_bank
-        data_out : out std_logic_vector(31 downto 0)            --output signal that will hold the data store in data_bank when read enable is set
+        data_out : out std_logic_vector(reg_size-1 downto 0)            --output signal that will hold the data store in data_bank when read enable is set
     );
 	
 end CPURegister;
 
 architecture Behave of CPURegister is
 --the data bank that holds the data internal to the register
-signal data_bank : std_logic_vector(31 downto 0) := (others => '0');
+signal data_bank : std_logic_vector(reg_size-1 downto 0) := (others => '0');
 begin
 	
 	--the output signal is always tied to the interal storage. 
